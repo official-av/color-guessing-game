@@ -1,64 +1,50 @@
 var start_game = function () {
-    document.body.style.backgroundColor = "white";
+    document.body.style.backgroundColor = "#FFFFFF";
     var flag = true;
-    var color = Math.random() * 10;
-    color = Math.floor(color);
-    var col = "";
-    var guess = 0;
-    alert(color);
-    var input_color = prompt("I've chosen a Color \n It is one amongst: \n aqua,blue,cyan,green,indigo,maroon,orange,pink,red,yellow\n Guess that color!");
-
-    while (flag != false) {
-        guess++;
-        switch (input_color) {
-        case "aqua":
-            col = 1;
-            break;
-        case "blue":
-            col = 2;
-            break;
-        case "cyan":
-            col = 3;
-            break;
-        case "green":
-            col = 4;
-            break;
-        case "indigo":
-            col = 5;
-            break;
-        case "maroon":
-            col = 6;
-            break;
-        case "orange":
-            col = 7;
-            break;
-        case "pink":
-            col = 8;
-            break;
-        case "red":
-            col = 9;
-            break;
-        case "yellow":
-            col = 10;
-            break;
-        default:
-            col = 0;
-        }
-        if (col == 0) {
-            alert("I wasn't able to judge your color! Try again");
-        } else if (col == color) {
-            document.body.style.backgroundColor = input_color;
-            break;
-        } else if (col > color) {
-            flag = confirm("Wrong Answer! \n Hint:Your color is alphabetically greater than mine! \nPlease try again.");
-            console.log(flag);
-        } else {
-            flag = confirm("Wrong Answer! \n Hint:Your color is alphabetically lower than mine! \nPlease try again.");
-        }
-        input_color = prompt("Guess the color again!\n It is one amongst: \n aqua,blue,cyan,green,indigo,maroon,orange,pink,red,yellow");
+    var input_color = null;
+    var calc_color = function () {
+        var color = Math.random() * 10;
+        color = Math.floor(color);
+        return color;
     }
-    setTimeout(function () {
-        alert("You've guessed the correct color! The answer is indeed " + input_color + "\n You took " + guess + " guesses to win the game");
-    }, 100);
+    var colarr = ["aqua", "blue", "cyan", "red", "maroon", "green", "indigo", "yellow", "orange", "pink"];
+    colarr.sort();
+    var guess_col = function () {
+        input_color = prompt("I've chosen a Color \n It is one amongst: \n" + colarr + "\n Guess that color!");
+        if (input_color == null) {
+            flag = false;
+        }
+    }
+    var play_game = function () {
+        color = calc_color();
+        alert("For Testing: " + color);
+        var guess = 0;
+        while (flag) {
+            guess_col();
+            guess++;
+            if (colarr.indexOf(input_color) == -1) {
+                alert("I wasn't able to judge your color! Try again");
+            } else if (colarr.indexOf(input_color) == color) {
+                document.body.style.backgroundColor = input_color;
+                break;
+            } else if (colarr.indexOf(input_color) < color) {
+                flag = confirm("Wrong Answer! \n Hint:Your color is alphabetically lower than mine! \nPlease try again.");
+            } else {
+                flag = confirm("Wrong Answer! \n Hint:Your color is alphabetically greater than mine! \nPlease try again.");
+            }
+        }
+        if (input_color != null && flag != false) {
+            setTimeout(function () {
+                alert("You've guessed the correct color! The answer is indeed " + input_color + "\n You took " + guess + " guesses to win the game");
+            }, 100);
+        }
+        setTimeout(function () {
+            if (confirm("Would you like to play again?")) {
+                flag = true;
+                play_game();
+            }
+        }, 200);
 
+    }
+    play_game();
 }
