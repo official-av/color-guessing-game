@@ -17,7 +17,6 @@ var start_game = function () {
     }
     var play_game = function () {
         color = calc_color();
-        alert("For Testing: " + color);
         var guess = 0;
         while (flag) {
             guess_col();
